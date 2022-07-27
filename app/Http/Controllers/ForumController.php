@@ -17,7 +17,7 @@ class ForumController extends Controller
     public function index()
     {
 
-        $forums = Forum::with(['answers'])->paginate(15);
+        $forums = Forum::with(['answers', 'users'])->paginate(15);
 
         return view('home', compact('forums'));
     }

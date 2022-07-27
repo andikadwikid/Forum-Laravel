@@ -7,11 +7,11 @@
 
             <aside class="col-md-auto border-end">
                 <ul class="nav flex-column">
-                    <li class="nav-item">
+                    <li class="nav-item border-bottom">
                         <a class="nav-link active" aria-current="page" href="#">Active</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                    <li class="nav-item border-bottom">
+                        <a class="nav-link" aria-current="page" href="#">Link</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>
@@ -37,12 +37,25 @@
                                 <a href="" class="text-decoration-none">{{ $forum->forum_title }}</a>
                                 <br>
                                 {{ Str::limit($forum->forum_text, 100) }}
-                                <div class="d-flex">
-                                    <div class="my-2">
-                                        {{ $forum->forum_title }}
+                                <div class="col">
+                                    <div class="row row-cols-auto">
+                                        {{-- <div class="d-flex flex-row"> --}}
+                                        @foreach ($forum->tags as $tag)
+                                            <div class="me-1 my-1">
+                                                <small class="bg-primary opacity-50 text-white rounded-1 p-1 col">
+                                                    {{ '#' . $tag->name }}
+                                                </small>
+                                            </div>
+                                        @endforeach
+
                                     </div>
+                                </div>
+                                <div class="d-flex">
                                     <div class="ms-auto my-2">
-                                        {{ $forum->created_at->diffForHumans() }}
+                                        <a href="" class="text-decoration-none mx-2">
+                                            {{ $forum->users->username }}
+                                        </a>
+                                        asked {{ $forum->created_at->diffForHumans() }}
                                     </div>
                                 </div>
                             </section>

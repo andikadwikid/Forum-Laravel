@@ -19,7 +19,7 @@ class TagSeeder extends Seeder
         $faker = Faker::create();
         for ($i = 1; $i <= 10; $i++) {
             Tag::create([
-                'name' => $name = $faker->sentence(),
+                'name' => $name = $faker->name(),
                 'slug' => Str::slug($name),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),

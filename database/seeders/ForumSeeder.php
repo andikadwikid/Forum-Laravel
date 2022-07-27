@@ -22,7 +22,6 @@ class ForumSeeder extends Seeder
         for ($i = 1; $i <= 30; $i++) {
             Forum::create([
                 'user_id' => User::all()->random()->id,
-                'tags_id' => Tag::all()->random()->id,
                 'slug' => $faker->name(),
                 'forum_title' => $faker->name(),
                 'forum_text' => $faker->sentence(),

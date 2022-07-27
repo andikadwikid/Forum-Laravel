@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('forums', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('user_id', 255);
-            $table->string('tags_id', 255);
             $table->string('forum_title');
             $table->text('forum_text');
             $table->string('slug');
@@ -24,7 +23,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('tags_id')->references('id')->on('tags');
         });
     }
 
