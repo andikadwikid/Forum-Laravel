@@ -14,10 +14,14 @@ class ForumController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $forums = Forum::with(['answers', 'users'])->paginate(15);
+        // $forums = Forum::with(['answers', 'users'])->paginate(15);
+        // $forums = Forum::when($request->has('title'), function ($query) use ($request) {
+        //     $query->where('forum_title', 'like', '%' . $request->title . '%');
+        // })->with(['answers', 'users'])->paginate(15);
+        $forums = Forum::search($request->title)->with(['answers', 'users'])->paginate(15);
 
         return view('home', compact('forums'));
     }

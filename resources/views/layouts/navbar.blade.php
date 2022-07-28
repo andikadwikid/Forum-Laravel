@@ -20,20 +20,17 @@
             @guest
                 <div class="d-flex">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        @if (request()->is('register'))
-                            <li>
-                                <a href="{{ route('login') }}" class="btn btn-primary">
-                                    Login
-                                </a>
-                            </li>
-                        @endif
-                        @if (request()->is('login'))
-                            <li>
-                                <a href="{{ route('register') }}" class="btn btn-primary">
-                                    Sign up
-                                </a>
-                            </li>
-                        @endif
+
+                        <li>
+                            <a href="{{ route('login') }}" class="btn btn-primary me-1 mb-1">
+                                Login
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('register') }}" class="btn btn-primary">
+                                Sign up
+                            </a>
+                        </li>
 
                     </ul>
                 </div>

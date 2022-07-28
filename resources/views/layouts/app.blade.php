@@ -15,6 +15,7 @@
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/scroll.css') }}">
     <script src="{{ asset('js/scroll.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     @yield('css')
 
     <!-- Fonts -->

@@ -31,4 +31,9 @@ class Forum extends Model
     {
         return $this->hasMany(ImageForum::class);
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('forum_title', 'LIKE', "%$search%");
+    }
 }
