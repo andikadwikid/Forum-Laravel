@@ -21,8 +21,8 @@ return new class extends Migration
             $table->boolean('best_answer')->default(false);
             $table->timestamps();
 
-            $table->foreign('forum_id')->references('id')->on('forums');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('forum_id')->references('id')->on('forums')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

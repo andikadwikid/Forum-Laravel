@@ -17,12 +17,12 @@ class LoginSocialiteController extends Controller
         'google',
     ];
 
-    private function isProviderAllowed($driver)
+    private function isProviderAllowed(string $driver)
     {
         return in_array($driver, $this->providers) && config()->has("services.{$driver}");
     }
 
-    public function google($driver, Request $request)
+    public function google(string $driver)
     {
         // dd(session('lastActivityTime'));
         if (!$this->isProviderAllowed($driver)) {
@@ -36,40 +36,65 @@ class LoginSocialiteController extends Controller
         }
     }
 
-    public function handleGoogleCallback($driver)
+    public function handleGoogleCallback(string $driver)
     {
         try {
             $callback = Socialite::driver($driver)->stateless()->user();
             $piece = explode(" ", $callback->getName());
             // dd($piece);
 
-            switch ($driver) {
+            match ($driver) {
+                'google' => $data = [
+                    'firstname' => $callback->offsetGet('given_name'),
+                    'lastname' => $callback->offsetGet('family_name'),
+                    'email' => $callback->getEmail(),
+                    'avatar' => $callback->getAvatar(),
+                    'provider_name' => $driver,
+                    'provider_id' => $callback->getId(),
+                    'email_verified_at' => date('Y-m-d H:i:s'),
+                ],
 
-                case 'google':
-                    $data = [
-                        'firstname' => $callback->offsetGet('given_name'),
-                        'lastname' => $callback->offsetGet('family_name'),
-                        'email' => $callback->getEmail(),
-                        'avatar' => $callback->getAvatar(),
-                        'provider_name' => $driver,
-                        'provider_id' => $callback->getId(),
-                        'email_verified_at' => date('Y-m-d H:i:s'),
-                    ];
-                    break;
+                'github' => $data = [
+                    'firstname' => $piece[0],
+                    'lastname' => $piece[1],
+                    'email' => $callback->getEmail(),
+                    'username' => $callback->getNickname(),
+                    'avatar' => $callback->getAvatar(),
+                    'provider_name' => $driver,
+                    'provider_id' => $callback->getId(),
+                    'email_verified_at' => date('Y-m-d H:i:s'),
+                ],
 
-                case 'github':
-                    $data = [
-                        'firstname' => $piece[0],
-                        'lastname' => $piece[1],
-                        'email' => $callback->getEmail(),
-                        'username' => $callback->getNickname(),
-                        'avatar' => $callback->getAvatar(),
-                        'provider_name' => $driver,
-                        'provider_id' => $callback->getId(),
-                        'email_verified_at' => date('Y-m-d H:i:s'),
-                    ];
-                    break;
-            }
+                default => view(abort(404)),
+            };
+
+            // switch ($driver) {
+
+            //     case 'google':
+            //         $data = [
+            //             'firstname' => $callback->offsetGet('given_name'),
+            //             'lastname' => $callback->offsetGet('family_name'),
+            //             'email' => $callback->getEmail(),
+            //             'avatar' => $callback->getAvatar(),
+            //             'provider_name' => $driver,
+            //             'provider_id' => $callback->getId(),
+            //             'email_verified_at' => date('Y-m-d H:i:s'),
+            //         ];
+            //         break;
+
+            //     case 'github':
+            //         $data = [
+            //             'firstname' => $piece[0],
+            //             'lastname' => $piece[1],
+            //             'email' => $callback->getEmail(),
+            //             'username' => $callback->getNickname(),
+            //             'avatar' => $callback->getAvatar(),
+            //             'provider_name' => $driver,
+            //             'provider_id' => $callback->getId(),
+            //             'email_verified_at' => date('Y-m-d H:i:s'),
+            //         ];
+            //         break;
+            // }
 
             $user = User::firstOrCreate(['email' => $data['email']], $data);
             Auth::login($user, true);

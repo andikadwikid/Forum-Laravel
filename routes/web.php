@@ -22,7 +22,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('/home', ForumController::class);
+Route::resource('/home', ForumController::class, ['except' => ['show']]);
+Route::get('/home/{forums:slug}', [ForumController::class, 'show'])->name('home.show');
+
+// Route::controller(ForumController::class)->group(function () {
+//     Route::get('/forum', 'index')->name('home');
+//     Route::get('/forum/create', 'create')->name('forum.create');
+//     Route::post('/forum/store', 'store')->name('forum.store');
+//     Route::get('/forum/{forum:slug}', 'show')->name('forum.show');
+//     Route::get('/forum/{forum}/edit', 'edit')->name('forum.edit');
+//     Route::put('/forum/{forum}/update', 'update')->name('forum.update');
+//     Route::delete('/forum/{forum}/delete', 'delete')->name('forum.delete');
+// });
 
 //socialite
 Route::get('/auth/{driver}', [LoginSocialiteController::class, 'google'])->name('sign-in-socialite');

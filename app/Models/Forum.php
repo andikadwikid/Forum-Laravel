@@ -27,10 +27,10 @@ class Forum extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function imagesForum()
-    {
-        return $this->hasMany(ImageForum::class);
-    }
+    // public function imagesForum()
+    // {
+    //     return $this->hasMany(ImageForum::class);
+    // }
 
     public function scopeSearch($query, $search)
     {

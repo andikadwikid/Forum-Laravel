@@ -24,7 +24,7 @@ class ForumSeeder extends Seeder
                 'user_id' => User::all()->random()->id,
                 'slug' => $faker->name(),
                 'forum_title' => $faker->name(),
-                'forum_text' => $faker->sentence(),
+                'forum_content' => $faker->sentence(),
                 'answered' => $faker->boolean(),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),

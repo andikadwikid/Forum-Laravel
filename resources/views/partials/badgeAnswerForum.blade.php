@@ -17,9 +17,11 @@ $badgeAnswer = false;
     <span class="bg-success opacity-75 text-white rounded-1 p-1">
         {{ $forum->answers->count() }} answers
     </span>
+    <p>views</p>
 </div>
 @else
 <div class="text-end">
     {{ $forum->answers->count() }} answers
+    <p>views</p>
 </div>
 @endif

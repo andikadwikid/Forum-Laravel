@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             ForumSeeder::class,
             AnswerSeeder::class,
-            ImageForumSeeder::class,
-            ImageAnswerSeeder::class,
+            // ImageForumSeeder::class,
+            // ImageAnswerSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

@@ -10,7 +10,7 @@
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('home.index') }}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
@@ -38,11 +38,12 @@
                 <div class="dflex">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
-                            <a class="dropdown-toggle nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-
-                                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle"
+                            <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle mx-1"
                                     height="30" alt="Black and White Portrait of a Man" loading="lazy" />
+                                {{ Auth::user()->firstname }}
+                                <i class="bi bi-patch-check text-success"></i>
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end">

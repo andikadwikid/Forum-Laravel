@@ -22,8 +22,8 @@ class Answer extends Model
         return $this->belongsTo(Forum::class);
     }
 
-    public function imagesAnswer()
-    {
-        return $this->hasMany(ImageAnswer::class);
-    }
+    // public function imagesAnswer()
+    // {
+    //     return $this->hasMany(ImageAnswer::class);
+    // }
 }

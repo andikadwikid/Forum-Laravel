@@ -12,8 +12,8 @@ class ImageForum extends Model
 
     protected $guarded = [];
 
-    public function forums()
-    {
-        return $this->belongsTo(Forum::class, 'forum_id');
-    }
+    // public function forums()
+    // {
+    //     return $this->belongsTo(Forum::class, 'forum_id');
+    // }
 }

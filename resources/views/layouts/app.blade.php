@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="{{ asset('css/scroll.css') }}">
     <script src="{{ asset('js/scroll.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     @yield('css')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
 </head>
 
 <body>

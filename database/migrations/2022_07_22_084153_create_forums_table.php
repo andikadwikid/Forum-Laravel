@@ -17,12 +17,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('user_id', 255);
             $table->string('forum_title');
-            $table->text('forum_text');
+            $table->longText('forum_content');
             $table->string('slug');
             $table->boolean('answered')->default(false);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -186,6 +186,7 @@ return [
          * Package Service Providers...
          */
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        // Unisharp\Ckeditor\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
