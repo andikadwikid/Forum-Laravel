@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-light shadow-sm sticky-top ">
     <div class="container">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Simple Forum</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -40,8 +40,8 @@
                         <li class="nav-item dropdown">
                             <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle mx-1"
-                                    height="30" alt="Black and White Portrait of a Man" loading="lazy" />
+                                <img src="{{ Auth::user()->avatar }}" class="rounded-circle mx-1" height="30"
+                                    alt="Avatar" loading="lazy" />
                                 {{ Auth::user()->firstname }}
                                 <i class="bi bi-patch-check text-success"></i>
                             </a>

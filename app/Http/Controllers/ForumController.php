@@ -23,7 +23,7 @@ class ForumController extends Controller
         // $forums = Forum::when($request->has('title'), function ($query) use ($request) {
         //     $query->where('forum_title', 'like', '%' . $request->title . '%');
         // })->with(['answers', 'users'])->paginate(15);
-        $forums = Forum::search($request->title)->with(['answers', 'users'])->latest()->paginate(15);
+        $forums = Forum::search($request->title)->with(['answers', 'users', 'views'])->latest()->paginate(15);
 
         return view('home', compact('forums', 'forum'));
     }
@@ -47,6 +47,7 @@ class ForumController extends Controller
      */
     public function store(Request $request)
     {
+
         // dd($request->all());
         $content = $request->forum_content;
         $dom = new \DOMDocument();
@@ -68,12 +69,18 @@ class ForumController extends Controller
         $slug = Str::slug(request('forum_title'));
         $content = $dom->saveHTML();
 
-        $forum = Forum::create([
-            'forum_title' => $request->forum_title,
-            'forum_content' => $content,
-            'slug' => $slug,
-            'user_id' => Auth::user()->id,
-        ]);
+        try {
+            $forum = Forum::create([
+                'forum_title' => $request->forum_title,
+                'forum_content' => $content,
+                'slug' => $slug,
+                'user_id' => Auth::user()->id,
+            ]);
+
+            $forum->tags()->sync($request->tags);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error while creating forum');
+        }
 
         return redirect()->route('home.index');
         // dd(Auth::user()->id);
@@ -87,7 +94,12 @@ class ForumController extends Controller
      */
     public function show(Forum $forums)
     {
-        $forum = Forum::with(['answers', 'users'])->findOrFail($forums->id);
+        $forum = Forum::with(['answers', 'users', 'views', 'tags'])->findOrFail($forums->id);
+        $views = [
+            'user_id' => Auth::user()->id,
+            'forum_id' => $forum->id,
+        ];
+        $forum->views()->firstOrCreate(['user_id' => $views['user_id']], $views);
         // $forum = Forum::with(['answers', 'users'])->firstOrFail($forums);
         return view('forum.show-forum', compact('forum', 'forum'));
     }

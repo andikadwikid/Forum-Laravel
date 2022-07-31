@@ -39,7 +39,7 @@
 
                 <div class="border-bottom my-4">
                     <p>
-                        Total Question {{ $forum->count() }}
+                        {{ $forum->count() }} Question
                     </p>
                 </div>
 
@@ -50,7 +50,7 @@
                                 @include('partials.badgeAnswerForum')
                             </div>
 
-                            <section class="col-md-9 border-bottom">
+                            <section class="col-md-8 border-bottom">
 
                                 <h1 class="fs-3 text-break">
                                     <a href="{{ route('home.show', $forum->slug) }}"
