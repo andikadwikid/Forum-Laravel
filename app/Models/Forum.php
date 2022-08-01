@@ -24,7 +24,7 @@ class Forum extends Model
 
     public function answers()
     {
-        return $this->hasMany(Answer::class);
+        return $this->hasMany(Answer::class)->latest();
     }
 
     public function views()
@@ -34,6 +34,6 @@ class Forum extends Model
 
     public function scopeSearch($query, $search)
     {
-        return $query->where('forum_title', 'LIKE', "%$search%");
+        return $query->where('forum_title', 'LIKE', "%$search%")->orWhere('forum_content', 'LIKE', "%$search%");
     }
 }

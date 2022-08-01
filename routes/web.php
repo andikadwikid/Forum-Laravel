@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginSocialiteController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,8 @@ Auth::routes();
 
 Route::resource('/home', ForumController::class, ['except' => ['show']]);
 Route::get('/home/{forums:slug}', [ForumController::class, 'show'])->name('home.show');
+Route::get('/home/tags/{tags:slug}', [TagController::class, 'show'])->name('tags.show');
+Route::post('/home/{forum:id}/answer', [ForumController::class, 'answerStore'])->name('home.answer.store');
 
 // Route::controller(ForumController::class)->group(function () {
 //     Route::get('/forum', 'index')->name('home');

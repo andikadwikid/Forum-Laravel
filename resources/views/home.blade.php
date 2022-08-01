@@ -37,12 +37,21 @@
                     </div>
                 </div>
 
-                <div class="border-bottom my-4">
-                    <p>
-                        {{ $forum->count() }} Question
-                    </p>
-                </div>
+                @isset($forum)
+                    <div class="border-bottom my-4">
+                        <p>
+                            {{ $forum->count() }} Question
+                        </p>
+                    </div>
+                @endisset
 
+                @isset($tags)
+                    <div class="border-bottom my-4">
+                        <p>
+                            {{ $forums->count() }} Question tagged [{{ $tags->name }}]
+                        </p>
+                    </div>
+                @endisset
                 @forelse ($forums as $forum)
                     <div class="container">
                         <div class="row my-2">
@@ -65,9 +74,11 @@
                                 <div class="d-flex flex-wrap">
                                     @foreach ($forum->tags as $tag)
                                         <div class="me-1 my-1">
-                                            <small class="bg-primary opacity-50 text-white rounded-1 p-1 col">
-                                                {{ '#' . $tag->name }}
-                                            </small>
+                                            <a href="{{ route('tags.show', $tag->slug) }}">
+                                                <small class="bg-primary opacity-50 text-white rounded-1 p-1 col">
+                                                    {{ '#' . $tag->name }}
+                                                </small>
+                                            </a>
                                         </div>
                                     @endforeach
                                 </div>

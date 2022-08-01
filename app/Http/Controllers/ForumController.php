@@ -95,6 +95,7 @@ class ForumController extends Controller
     public function show(Forum $forums)
     {
         $forum = Forum::with(['answers', 'users', 'views', 'tags'])->findOrFail($forums->id);
+
         $views = [
             'user_id' => Auth::user()->id,
             'forum_id' => $forum->id,
@@ -136,5 +137,40 @@ class ForumController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function answerStore(Request $request, Forum $forum)
+    {
+
+        $content = $request->answer_content;
+        $dom = new \DOMDocument();
+        $dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $imageFile  = $dom->getElementsByTagName('imageFile');
+
+        foreach ($imageFile  as $item => $img) {
+            $data = $img->getAttribute('src');
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $imgData = base64_decode($data);
+            $imageName = "/images-answer/" . time() . $item . ".png";
+            $path = public_path() . $imageName;
+            file_put_contents($path, $imgData);
+
+            $img->removeAttribute('src');
+            $img->setAttribute('src', $imageName);
+        }
+
+        $content = $dom->saveHTML();
+
+        try {
+            $forum->answers()->create([
+                'answer_content' => $content,
+                'user_id' => Auth::user()->id,
+                'forum_id' => $forum->id,
+            ]);
+        } catch (\Exception $e) {
+            return $e;
+        }
+        return redirect()->back();
     }
 }

@@ -41,7 +41,7 @@
                             <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ Auth::user()->avatar }}" class="rounded-circle mx-1" height="30"
-                                    alt="Avatar" loading="lazy" />
+                                    alt="{{ Auth::user()->username }}" loading="lazy" />
                                 {{ Auth::user()->firstname }}
                                 <i class="bi bi-patch-check text-success"></i>
                             </a>
