@@ -68,34 +68,6 @@ class LoginSocialiteController extends Controller
                 default => view(abort(404)),
             };
 
-            // switch ($driver) {
-
-            //     case 'google':
-            //         $data = [
-            //             'firstname' => $callback->offsetGet('given_name'),
-            //             'lastname' => $callback->offsetGet('family_name'),
-            //             'email' => $callback->getEmail(),
-            //             'avatar' => $callback->getAvatar(),
-            //             'provider_name' => $driver,
-            //             'provider_id' => $callback->getId(),
-            //             'email_verified_at' => date('Y-m-d H:i:s'),
-            //         ];
-            //         break;
-
-            //     case 'github':
-            //         $data = [
-            //             'firstname' => $piece[0],
-            //             'lastname' => $piece[1],
-            //             'email' => $callback->getEmail(),
-            //             'username' => $callback->getNickname(),
-            //             'avatar' => $callback->getAvatar(),
-            //             'provider_name' => $driver,
-            //             'provider_id' => $callback->getId(),
-            //             'email_verified_at' => date('Y-m-d H:i:s'),
-            //         ];
-            //         break;
-            // }
-
             $user = User::firstOrCreate(['email' => $data['email']], $data);
             Auth::login($user, true);
 
