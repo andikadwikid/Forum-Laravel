@@ -15,7 +15,6 @@
             <div class="form-group mb-3">
                 <label>Description</label>
                 <textarea class="form-control" id="content" name="forum_content"></textarea>
-                <p>Align center : CTRL + Shift + E </p>
             </div>
 
             <div class="form-group">

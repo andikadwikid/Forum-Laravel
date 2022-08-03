@@ -31,18 +31,6 @@
                     @endforeach
                 </div>
 
-                <form method="post" action="{{ route('home.answer.store', $forum->id) }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group my-3">
-                        <label class="form-label fw-bold mt-4">Your Answers</label>
-                        <textarea class="form-control" id="content" name="answer_content"></textarea>
-                        <p>Align center : CTRL + Shift + E </p>
-                    </div>
-                    <div class="form-group my-2">
-                        <button type="submit" class="btn btn-primary btn-block">Post Your Answer</button>
-                    </div>
-                </form>
-
                 <div class="d-flex flex-wrap mb-5">
 
                     @can('viewEditDelete', $forum)
@@ -60,7 +48,18 @@
                     @endcan
                 </div>
 
-                <h2 class="fs-3">Answers</h2>
+                <form method="post" action="{{ route('home.answer.store', $forum->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group my-3">
+                        <label class="form-label fw-bold mt-4">Your Answers</label>
+                        <textarea class="form-control" id="content" name="answer_content"></textarea>
+                    </div>
+                    <div class="form-group my-2">
+                        <button type="submit" class="btn btn-primary btn-block">Post Your Answer</button>
+                    </div>
+                </form>
+
+                <h2 class="fs-3 mt-4">Answers</h2>
                 @forelse ($forum->answers as $answer)
                     <section class="text-break">
                         <div class="border p-2 mb-4 border-opacity-10 rounded-1">
