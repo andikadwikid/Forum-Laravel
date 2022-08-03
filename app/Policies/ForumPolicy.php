@@ -53,7 +53,7 @@ class ForumPolicy
      */
     public function update(User $user, Forum $forum)
     {
-        //
+        return $user->id === $forum->user_id;
     }
 
     /**
@@ -65,7 +65,7 @@ class ForumPolicy
      */
     public function delete(User $user, Forum $forum)
     {
-        //
+        return $user->id === $forum->user_id;
     }
 
     /**

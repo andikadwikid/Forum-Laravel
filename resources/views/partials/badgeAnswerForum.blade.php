@@ -14,21 +14,23 @@ $badgeAnswer = false;
 
 @if ($badgeAnswer)
 <div class="text-end my-2">
-    <span class="bg-success opacity-75 text-white rounded-1 p-1">
+    <small class="bg-success opacity-75 text-white rounded-1 p-1 p-md-n1 p-lg-1">
         {{-- <i class="bi bi-check-lg"></i> --}}
         {{ $forum->answers->count() }} answers
-    </span>
-    <p class="mt-2">
+    </small>
+    <br>
+    <small class="mt-2">
         {{ $forum->views->count() }} views
-    </p>
+    </small>
 </div>
 @else
 <div class="text-end">
-    <span>
+    <small>
         {{ $forum->answers->count() }} answers
-    </span>
-    <p class="mt-2">
+    </small>
+    <br>
+    <small class="mt-2">
         {{ $forum->views->count() }} views
-    </p>
+    </small>
 </div>
 @endif

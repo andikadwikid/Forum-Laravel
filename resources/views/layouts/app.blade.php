@@ -17,7 +17,7 @@
     <script src="{{ asset('js/scroll.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    @yield('css')
+    @stack('css')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -25,7 +25,7 @@
 </head>
 
 <body>
-    <div>
+    <div class="">
 
         @include('layouts.navbar')
 

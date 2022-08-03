@@ -6,23 +6,27 @@
 @endpush
 @section('content')
     <div class="container">
-        <form method="post" action="{{ route('home.store') }}" enctype="multipart/form-data">
+        <form method="post" action="" enctype="multipart/form-data">
+            @method('patch')
             @csrf
             <div class="form-group mb-3">
                 <label>Title</label>
-                <input type="text" name="forum_title" class="form-control" />
+                <input type="text" name="forum_title" value="{{ old('forum_title') ?? $forums->forum_title }}"
+                    class="form-control" />
             </div>
             <div class="form-group mb-3">
                 <label>Description</label>
-                <textarea class="form-control" id="content" name="forum_content"></textarea>
+                <textarea class="form-control" id="content" name="forum_content">
+                    {{ $forums->forum_content }}
+                </textarea>
                 <p>Align center : CTRL + Shift + E </p>
             </div>
 
             <div class="form-group">
                 <label for="tags">Tags</label>
-
                 <select name="tags[]" id="tags" class="form-control select2 @error('tags') is-invalid @enderror"
                     multiple="multiple">
+
                     @foreach ($forums->tags as $tag)
                         <option selected value="{{ $tag->id }}"
                             {{ in_array($tag->id, old('tags') ?: []) ? 'selected' : '' }}>
@@ -34,12 +38,14 @@
                     @endforeach
                 </select>
 
+                <!-- untuk menampilkan error pada field input -->
                 @error('tags')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
+
 
             <div class="form-group my-2">
                 <button type="submit" class="btn btn-primary btn-block my-2">Post Your Question</button>

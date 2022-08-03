@@ -3,9 +3,8 @@
 @section('content')
     @include('sweetalert::alert')
     <div class="container-fluid">
-        <div class="row justify-content-center">
-
-            <aside class="col-md-auto border-end">
+        <div class="row">
+            <aside class="col-md-auto col-lg-1 border-end d-flex flex-column">
                 <ul class="nav flex-column">
                     <li class="nav-item border-bottom rounded-1">
                         <a class="nav-link active text-dark" aria-current="page" href="#">Active</a>
@@ -22,7 +21,7 @@
                 </ul>
             </aside>
 
-            <main class="col-md-6">
+            <main class="col-lg-8 col-md-6">
                 <div class="d-flex">
                     <div class="flex-grow-1 me-1">
                         <form action="{{ route('home.index') }}" name="searchform" method="GET">
@@ -53,13 +52,13 @@
                     </div>
                 @endisset
                 @forelse ($forums as $forum)
-                    <div class="container">
+                    <div class="container-fluid">
                         <div class="row my-2">
-                            <div class="col-md-auto border-bottom text-end">
+                            <div class="col-md-3 col-lg-auto border-bottom text-end mb-2 mb-sm-2 mb-md-0 mb-lg-0">
                                 @include('partials.badgeAnswerForum')
                             </div>
 
-                            <section class="col-md-8 border-bottom">
+                            <section class="col-md-9 border-bottom">
 
                                 <h1 class="fs-3 text-break">
                                     <a href="{{ route('home.show', $forum->slug) }}"
@@ -86,7 +85,7 @@
                                 <div class="d-flex">
                                     <div class="ms-auto my-2">
                                         <a href="" class="text-decoration-none mx-2">
-                                            {{ $forum->users->username }}
+                                            {{ $forum->users->fullname }}
                                         </a>
                                         asked {{ $forum->created_at->diffForHumans() }}
                                     </div>
@@ -111,7 +110,7 @@
 
             </main>
 
-            <aside class="col-md-2">
+            <aside class="col-lg-3 col-md-4">
                 <div class="card mb-3">
                     <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
@@ -132,18 +131,45 @@
 
                 <div class="card mb-3 position-relative">
                     <i class="bi bi-pin-angle position-absolute top-0 start-100 translate-middle"></i>
-                    <div class="card-header">Popular</div>
+                    <div class="card-header">Popular Today Question</div>
                     <div class="card-body">
-
+                        @forelse ($popular_today_forum as $popularToday)
+                            <p>
+                                <a href="" class="text-decoration-none">
+                                    {{ $popularToday->forum_title }}
+                                </a>
+                            </p>
+                        @empty
+                        @endforelse
                     </div>
+                </div>
 
+
+                <div class="card mb-3 position-relative">
+                    <i class="bi bi-pin-angle position-absolute top-0 start-100 translate-middle"></i>
+                    <div class="card-header">Popular Question</div>
+                    <div class="card-body">
+                        @forelse ($popular_forum as $popular)
+                            <p>
+                                <a href="" class="text-decoration-none">
+                                    {{ $popular->forum_title }}
+                                </a>
+                            </p>
+                        @empty
+                        @endforelse
+                    </div>
                 </div>
 
                 <div class="card mb-3 position-relative">
                     <i class="bi bi-pin-angle position-absolute top-0 start-100 translate-middle"></i>
-                    <div class="card-header">Recent</div>
+                    <div class="card-header">Recent Question</div>
                     <div class="card-body">
-
+                        @forelse ($recent_forum as $recent)
+                            <p>
+                                <a href="" class="text-decoration-none">{{ $recent->forum_title }}</a>
+                            </p>
+                        @empty
+                        @endforelse
                     </div>
 
                 </div>

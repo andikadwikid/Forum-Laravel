@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Answer;
+use App\Models\Forum;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -30,11 +32,27 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->registerPolicies();
-        // Gate::define('editAndDeleteAnswer', function (User $user, Answer $answer) {
-        //     return $answer->user_id == $user->id;
-        // });
         Paginator::useBootstrap();
-        View::share('answers', Answer::all());
+        View::share(
+            'popular_forum',
+            Forum::withCount('views')
+                ->orderBy('views_count', 'desc')
+                ->limit(10)
+                ->get()
+        );
+        View::share(
+            'popular_today_forum',
+            Forum::withCount('views')
+                ->orderBy('views_count', 'desc')
+                ->whereDate('created_at', Carbon::today())
+                ->limit(5)
+                ->get()
+        );
+        View::share(
+            'recent_forum',
+            Forum::orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get()
+        );
     }
 }

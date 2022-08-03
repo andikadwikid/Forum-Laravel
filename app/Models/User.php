@@ -46,6 +46,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'full_name',
+    ];
+
     public function forums()
     {
         return $this->hasMany(Forum::class, 'user_id');
@@ -54,5 +58,10 @@ class User extends Authenticatable
     public function answers()
     {
         return $this->hasMany(Answer::class, 'user_id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstname . " " . $this->lastname;
     }
 }

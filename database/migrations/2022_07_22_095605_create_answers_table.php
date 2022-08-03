@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('forum_id', 255);
             $table->string('user_id', 255);
-            $table->string('answer_content', 255);
+            $table->longText('answer_content');
             $table->boolean('best_answer')->default(false);
             $table->timestamps();
 

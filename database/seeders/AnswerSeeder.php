@@ -23,7 +23,7 @@ class AnswerSeeder extends Seeder
             Answer::create([
                 'forum_id' => Forum::all()->random()->id,
                 'user_id' => User::all()->random()->id,
-                'answer_text' => $faker->sentence(),
+                'answer_content' => $faker->sentence(),
                 'best_answer' => $faker->boolean(),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),

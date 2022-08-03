@@ -23,8 +23,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('/home', ForumController::class, ['except' => ['show']]);
+Route::resource('/home', ForumController::class, ['except' => ['show', 'edit', 'update', 'destroy']]);
 Route::get('/home/{forums:slug}', [ForumController::class, 'show'])->name('home.show');
+Route::get('/home/{forums:slug}/edit', [ForumController::class, 'edit'])->name('home.edit');
+Route::patch('/home/{forums:slug}/edit', [ForumController::class, 'update'])->name('home.update');
+Route::delete('/home/{forums:slug}', [ForumController::class, 'destroy'])->name('home.destroy');
 Route::get('/home/tags/{tags:slug}', [TagController::class, 'show'])->name('tags.show');
 Route::post('/home/{forum:id}/answer', [ForumController::class, 'answerStore'])->name('home.answer.store');
 
