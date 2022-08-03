@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Path\To\DOMDocument;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use File;
 
 class ForumController extends Controller
 {
@@ -46,59 +47,38 @@ class ForumController extends Controller
     public function store(Request $request)
     {
 
-        $storage = "storage/forum-images";
-        $dom = new \DOMDocument();
+        $dom = new \DomDocument();
+        $dom->loadHtml($request->forum_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $image_file = $dom->getElementsByTagName('img');
 
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($request->forum_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
-        $images = $dom->getElementsByTagName('img');
+        if (!File::exists(public_path('storage/forum-images'))) {
+            File::makeDirectory(public_path('storage/forum-images'));
+        }
+        foreach ($image_file as $key => $image) {
+            $data = $image->getAttribute('src');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
-            if (preg_match('/data:image/', $src)) {
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+            list($type, $data) = explode(';', $data);
+            list(, $data) = explode(',', $data);
 
-                $fileNameContent = uniqid();
-                $fileNameContentRand = substr(md5($fileNameContent), 6, 6) . '.' . time();
-                $filePath = ("$storage/$fileNameContentRand.$mimetype");
-                $image = Image::make($src)
-                    // ->resize(350, 350)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filePath));
+            $img_data = base64_decode($data);
+            $image_name = Storage::url('public/forum-images/' . time() . $key . '.png');
+            $path = public_path() . $image_name;
+            file_put_contents($path, $img_data);
 
-                $new_src = asset($filePath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
-                $img->setAttribute('class', 'img-fluid');
-            }
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+            $image->setAttribute('class', 'img-fluid');
         }
 
-        // $content = $request->forum_content;
-        // $dom = new \DOMDocument();
-        // $dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        // $imageFile  = $dom->getElementsByTagName('imageFile ');
+        $content = $dom->saveHTML();
 
-        // foreach ($imageFile  as $item => $img) {
-        //     $data = $img->getAttribute('src');
-        //     list($type, $data) = explode(';', $data);
-        //     list(, $data)      = explode(',', $data);
-        //     $imgData = base64_decode($data);
-        //     $imageName = "/images-forum/" . time() . $item . ".png";
-        //     $path = public_path() . $imageName;
-        //     file_put_contents($path, $imgData);
-
-        //     $img->removeAttribute('src');
-        //     $img->setAttribute('src', $imageName);
-        // }
         $slug = Str::slug(request('forum_title'));
 
         try {
             $forum = Forum::create([
                 'forum_title' => $request->forum_title,
-                // 'forum_content' => $content,
-                'forum_content' => $dom->saveHTML(),
+                'forum_content' => $content,
+                // 'forum_content' => $dom->saveHTML(),
                 'slug' => $slug,
                 'user_id' => Auth::user()->id,
             ]);
@@ -109,7 +89,6 @@ class ForumController extends Controller
         }
 
         return redirect()->route('home.index');
-        // dd(Auth::user()->id);
     }
 
     /**
@@ -127,7 +106,6 @@ class ForumController extends Controller
             'forum_id' => $forum->id,
         ];
         $forum->views()->firstOrCreate(['user_id' => $views['user_id']], $views);
-        // $forum = Forum::with(['answers', 'users'])->firstOrFail($forums);
         return view('forum.show-forum', compact('forum', 'forum'));
     }
 
@@ -154,39 +132,35 @@ class ForumController extends Controller
     {
         $this->authorize('update', $forums);
 
-        $storage = "storage/forum-images";
-        $dom = new \DOMDocument();
+        $dom = new \DomDocument();
+        $dom->loadHtml($request->forum_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $image_file = $dom->getElementsByTagName('img');
 
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($request->forum_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
-            if (preg_match('/data:image/', $src)) {
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
-
-                $fileNameContent = uniqid();
-                $fileNameContentRand = substr(md5($fileNameContent), 6, 6) . '.' . time();
-                $filePath = ("$storage/$fileNameContentRand.$mimetype");
-                $image = Image::make($src)
-                    // ->resize(350, 350)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filePath));
-
-                $new_src = asset($filePath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
-                $img->setAttribute('class', 'img-fluid');
-            }
+        if (!File::exists(public_path('storage/forum-images'))) {
+            File::makeDirectory(public_path('storage/forum-images'));
         }
+        foreach ($image_file as $key => $image) {
+            $data = $image->getAttribute('src');
+
+            list($type, $data) = explode(';', $data);
+            list(, $data) = explode(',', $data);
+
+            $img_data = base64_decode($data);
+            $image_name = Storage::url('public/forum-images/' . time() . $key . '.png');
+            $path = public_path() . $image_name;
+            file_put_contents($path, $img_data);
+
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+            $image->setAttribute('class', 'img-fluid');
+        }
+
+        $content = $dom->saveHTML();
 
         try {
             $forums->update([
                 'forum_title' => $request->forum_title,
-                'forum_content' => $dom->saveHTML(),
+                'forum_content' => $content,
                 'slug' => Str::slug($request->forum_title),
                 'user_id' => Auth::user()->id,
             ]);
@@ -219,38 +193,34 @@ class ForumController extends Controller
     public function answerStore(Request $request, Forum $forum)
     {
 
-        $storage = "storage/answer-images";
-        $dom = new \DOMDocument();
+        $dom = new \DomDocument();
+        $dom->loadHtml($request->answer_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $image_file = $dom->getElementsByTagName('img');
 
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($request->answer_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
-        $images = $dom->getElementsByTagName('img');
-
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
-            if (preg_match('/data:image/', $src)) {
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
-
-                $fileNameContent = uniqid();
-                $fileNameContentRand = substr(md5($fileNameContent), 6, 6) . '.' . time();
-                $filePath = ("$storage/$fileNameContentRand.$mimetype");
-                $image = Image::make($src)
-                    // ->resize(350, 350)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filePath));
-
-                $new_src = asset($filePath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
-                $img->setAttribute('class', 'img-fluid');
-            }
+        if (!File::exists(public_path('storage/answer-images'))) {
+            File::makeDirectory(public_path('storage/answer-images'));
         }
+        foreach ($image_file as $key => $image) {
+            $data = $image->getAttribute('src');
+
+            list($type, $data) = explode(';', $data);
+            list(, $data) = explode(',', $data);
+
+            $img_data = base64_decode($data);
+            $image_name = Storage::url('public/answer-images/' . time() . $key . '.png');
+            $path = public_path() . $image_name;
+            file_put_contents($path, $img_data);
+
+            $image->removeAttribute('src');
+            $image->setAttribute('src', $image_name);
+            $image->setAttribute('class', 'img-fluid');
+        }
+
+        $content = $dom->saveHTML();
 
         try {
             Answer::create([
-                'answer_content' => $request->answer_content,
+                'answer_content' => $content,
                 'user_id' => Auth::user()->id,
                 'forum_id' => $forum->id,
             ]);
