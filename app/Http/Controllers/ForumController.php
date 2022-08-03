@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Path\To\DOMDocument;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
-use File;
+use Illuminate\Support\Facades\File;
 
 class ForumController extends Controller
 {
