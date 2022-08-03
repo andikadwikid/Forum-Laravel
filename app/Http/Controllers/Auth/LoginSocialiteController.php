@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use RealRashid\SweetAlert\Facades\Alert;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Storage;
 
 class LoginSocialiteController extends Controller
 {
@@ -41,7 +43,6 @@ class LoginSocialiteController extends Controller
         try {
             $callback = Socialite::driver($driver)->stateless()->user();
             $piece = explode(" ", $callback->getName());
-            // dd($piece);
 
             match ($driver) {
                 'google' => $data = [
