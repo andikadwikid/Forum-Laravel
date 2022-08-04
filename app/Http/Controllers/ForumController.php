@@ -59,12 +59,16 @@ class ForumController extends Controller
             list(, $data) = explode(',', $data);
 
             $img_data = base64_decode($data);
-            $image_name = Storage::url('public/forum-images/' . time() . $key . '.png');
-            $path = public_path() . $image_name;
+
+            //nama image
+            $image_name = time() . $key . '.png';
+
+            $url_image = Storage::url('public/forum-images/' . time() . $key . '.png');
+            $path = public_path() . Storage::url('public/forum-images/' . time() . $key . '.png');
             file_put_contents($path, $img_data);
 
             $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
+            $image->setAttribute('src', $url_image);
             $image->setAttribute('class', 'img-fluid');
         }
 
@@ -76,7 +80,6 @@ class ForumController extends Controller
             $forum = Forum::create([
                 'forum_title' => $request->forum_title,
                 'forum_content' => $content,
-                // 'forum_content' => $dom->saveHTML(),
                 'slug' => $slug,
                 'user_id' => Auth::user()->id,
             ]);
@@ -137,6 +140,7 @@ class ForumController extends Controller
         if (!File::exists(public_path('storage/forum-images'))) {
             File::makeDirectory(public_path('storage/forum-images'));
         }
+
         foreach ($image_file as $key => $image) {
             $data = $image->getAttribute('src');
 
@@ -144,12 +148,16 @@ class ForumController extends Controller
             list(, $data) = explode(',', $data);
 
             $img_data = base64_decode($data);
-            $image_name = Storage::url('public/forum-images/' . time() . $key . '.png');
-            $path = public_path() . $image_name;
+
+            //nama image
+            $image_name = time() . $key . '.png';
+
+            $url_image = Storage::url('public/forum-images/' . time() . $key . '.png');
+            $path = public_path() . $url_image;
             file_put_contents($path, $img_data);
 
             $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
+            $image->setAttribute('src', $url_image);
             $image->setAttribute('class', 'img-fluid');
         }
 
@@ -205,12 +213,16 @@ class ForumController extends Controller
             list(, $data) = explode(',', $data);
 
             $img_data = base64_decode($data);
-            $image_name = Storage::url('public/answer-images/' . time() . $key . '.png');
-            $path = public_path() . $image_name;
+
+            //nama image
+            $image_name = time() . $key . '.png';
+
+            $url_image = Storage::url('public/answer-images/' . time() . $key . '.png');
+            $path = public_path() . $url_image;
             file_put_contents($path, $img_data);
 
             $image->removeAttribute('src');
-            $image->setAttribute('src', $image_name);
+            $image->setAttribute('src', $url_image);
             $image->setAttribute('class', 'img-fluid');
         }
 
