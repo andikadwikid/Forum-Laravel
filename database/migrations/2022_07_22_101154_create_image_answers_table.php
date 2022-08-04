@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('image_answers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            // $table->string('answer_id', 255);
+            $table->string('answer_id', 255);
             $table->text('image_name')->nullable();
             $table->timestamps();
 
-            // $table->foreign('answer_id')->references('id')->on('answers');
+            $table->foreign('answer_id')->references('id')->on('answers');
         });
     }
 

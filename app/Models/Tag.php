@@ -10,6 +10,7 @@ class Tag extends Model
 {
     use Uuids, HasFactory;
 
+    protected $table = 'tags';
     protected $guarded = [];
 
     public function forums()

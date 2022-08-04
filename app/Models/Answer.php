@@ -10,6 +10,7 @@ class Answer extends Model
 {
     use Uuids, HasFactory;
 
+    protected $table = 'answers';
     protected $guarded = [];
 
     public function users()
@@ -22,8 +23,8 @@ class Answer extends Model
         return $this->belongsTo(Forum::class);
     }
 
-    // public function imagesAnswer()
-    // {
-    //     return $this->hasMany(ImageAnswer::class);
-    // }
+    public function imagesAnswer()
+    {
+        return $this->hasMany(ImageAnswer::class);
+    }
 }

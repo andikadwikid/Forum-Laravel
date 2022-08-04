@@ -12,8 +12,8 @@ class ImageAnswer extends Model
 
     protected $guarded = [];
 
-    // public function answers()
-    // {
-    //     return $this->belongsTo(Answer::class, 'answer_id');
-    // }
+    public function answers()
+    {
+        return $this->belongsTo(Answer::class, 'answer_id');
+    }
 }

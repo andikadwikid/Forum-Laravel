@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('image_forums', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            // $table->string('forum_id', 255);
+            $table->string('forum_id', 255);
             $table->text('image_name')->nullable();
             $table->timestamps();
 
-            // $table->foreign('forum_id')->references('id')->on('forums')->onDelete('cascade');
+            $table->foreign('forum_id')->references('id')->on('forums')->onDelete('cascade');
         });
     }
 

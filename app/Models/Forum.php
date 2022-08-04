@@ -10,6 +10,7 @@ class Forum extends Model
 {
     use Uuids, HasFactory;
 
+    protected $table = 'forums';
     protected $guarded = [];
 
     public function users()
@@ -30,6 +31,11 @@ class Forum extends Model
     public function views()
     {
         return $this->hasMany(View::class);
+    }
+
+    public function ImageForum()
+    {
+        return $this->hasMany(ImageForum::class);
     }
 
     public function scopeSearch($query, $search)
