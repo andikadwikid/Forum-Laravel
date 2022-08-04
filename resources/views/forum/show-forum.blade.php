@@ -48,16 +48,18 @@
                     @endcan
                 </div>
 
-                <form method="post" action="{{ route('home.answer.store', $forum->id) }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group my-3">
-                        <label class="form-label fw-bold mt-4">Your Answers</label>
-                        <textarea class="form-control" id="content" name="answer_content"></textarea>
-                    </div>
-                    <div class="form-group my-2">
-                        <button type="submit" class="btn btn-primary btn-block">Post Your Answer</button>
-                    </div>
-                </form>
+                @auth
+                    <form method="post" action="{{ route('home.answer.store', $forum->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group my-3">
+                            <label class="form-label fw-bold mt-4">Your Answers</label>
+                            <textarea class="form-control" id="content" name="answer_content"></textarea>
+                        </div>
+                        <div class="form-group my-2">
+                            <button type="submit" class="btn btn-primary btn-block">Post Your Answer</button>
+                        </div>
+                    </form>
+                @endauth
 
                 <h2 class="fs-3 mt-4">Answers</h2>
                 @forelse ($forum->answers as $answer)

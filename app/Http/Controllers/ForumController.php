@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\File;
 
 class ForumController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request, Forum $forum)
     {
         $forums = Forum::search($request->title)->with(['answers', 'users', 'views'])->latest()->paginate(15);
@@ -25,23 +21,14 @@ class ForumController extends Controller
         return view('home', compact('forums', 'forum'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create(Forum $forums)
     {
         $tags = Tag::get();
         return view('forum.create-forum', compact('forums', 'tags'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
 
@@ -92,43 +79,29 @@ class ForumController extends Controller
         return redirect()->route('home.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Forum $forums)
     {
         $forum = Forum::with(['answers', 'users', 'views', 'tags'])->findOrFail($forums->id);
 
-        $views = [
-            'user_id' => Auth::user()->id,
-            'forum_id' => $forum->id,
-        ];
-        $forum->views()->firstOrCreate(['user_id' => $views['user_id']], $views);
+        if (Auth::check()) {
+            $views = [
+                'user_id' => Auth::user()->id,
+                'forum_id' => $forum->id,
+            ];
+            $forum->views()->firstOrCreate(['user_id' => $views['user_id']], $views);
+        }
         return view('forum.show-forum', compact('forum', 'forum'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Forum $forums, Tag $tags)
     {
         $tags = $tags->get();
         return view('forum.edit-forum', compact('forums', 'tags'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Forum $forums)
     {
         $this->authorize('update', $forums);
@@ -136,6 +109,7 @@ class ForumController extends Controller
         $dom = new \DomDocument();
         $dom->loadHtml($request->forum_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $image_file = $dom->getElementsByTagName('img');
+        $bs64 = 'base64';
 
         if (!File::exists(public_path('storage/forum-images'))) {
             File::makeDirectory(public_path('storage/forum-images'));
@@ -143,22 +117,25 @@ class ForumController extends Controller
 
         foreach ($image_file as $key => $image) {
             $data = $image->getAttribute('src');
+            if (strpos($data, $bs64) == true) {
+                list($type, $data) = explode(';', $data);
+                list(, $data) = explode(',', $data);
 
-            list($type, $data) = explode(';', $data);
-            list(, $data) = explode(',', $data);
+                $img_data = base64_decode($data);
 
-            $img_data = base64_decode($data);
+                //nama image
+                $image_name = time() . $key . '.png';
 
-            //nama image
-            $image_name = time() . $key . '.png';
+                $url_image = Storage::url('public/forum-images/' . time() . $key . '.png');
+                $path = public_path() . $url_image;
+                file_put_contents($path, $img_data);
 
-            $url_image = Storage::url('public/forum-images/' . time() . $key . '.png');
-            $path = public_path() . $url_image;
-            file_put_contents($path, $img_data);
-
-            $image->removeAttribute('src');
-            $image->setAttribute('src', $url_image);
-            $image->setAttribute('class', 'img-fluid');
+                $image->removeAttribute('src');
+                $image->setAttribute('src', $url_image);
+                $image->setAttribute('class', 'img-fluid');
+            } else {
+                $image->setAttribute('class', 'img-fluid');
+            }
         }
 
         $content = $dom->saveHTML();
@@ -178,12 +155,7 @@ class ForumController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Forum $forums)
     {
         $this->authorize('delete', $forums);

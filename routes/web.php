@@ -23,13 +23,22 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::resource('/home', ForumController::class, ['except' => ['show', 'edit', 'update', 'destroy']]);
-Route::get('/home/{forums:slug}', [ForumController::class, 'show'])->name('home.show');
-Route::get('/home/{forums:slug}/edit', [ForumController::class, 'edit'])->name('home.edit');
-Route::patch('/home/{forums:slug}/edit', [ForumController::class, 'update'])->name('home.update');
-Route::delete('/home/{forums:slug}', [ForumController::class, 'destroy'])->name('home.destroy');
-Route::get('/home/tags/{tags:slug}', [TagController::class, 'show'])->name('tags.show');
-Route::post('/home/{forum:id}/answer', [ForumController::class, 'answerStore'])->name('home.answer.store');
+//Forum and Answer
+Route::controller(ForumController::class)->group(function () {
+    Route::middleware('auth')->group(function () {
+        Route::get('/home/create', 'create')->name('home.create');
+        Route::post('/home/create', 'store')->name('home.store');
+        Route::get('/home/{forums:slug}/edit', 'edit')->name('home.edit');
+        Route::patch('/home/{forums:slug}/edit', 'update')->name('home.update');
+        Route::delete('/home/{forums:slug}', 'destroy')->name('home.destroy');
+
+        Route::post('/home/{forum:id}/answer', 'answerStore')->name('home.answer.store');
+    });
+    Route::get('/home', 'index')->name('home.index');
+    Route::get('/home/{forums:slug}', 'show')->name('home.show');
+
+    Route::get('/home/tags/{tags:slug}', 'show')->name('tags.show');
+});
 
 //socialite
 Route::get('/auth/{driver}', [LoginSocialiteController::class, 'google'])->name('sign-in-socialite');
