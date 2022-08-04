@@ -72,8 +72,9 @@ class ForumController extends Controller
             ]);
 
             $forum->tags()->sync($request->tags);
+            return to_route('home.show', $slug)->with('success', 'Task Created Successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error while creating forum');
+            return redirect()->back()->with('error', 'Error while creating question');
         }
 
         return redirect()->route('home.index');
@@ -139,19 +140,19 @@ class ForumController extends Controller
         }
 
         $content = $dom->saveHTML();
-
+        $slug = Str::slug($request->forum_title);
         try {
             $forums->update([
                 'forum_title' => $request->forum_title,
                 'forum_content' => $content,
-                'slug' => Str::slug($request->forum_title),
+                'slug' => $slug,
                 'user_id' => Auth::user()->id,
             ]);
             $forums->tags()->sync($request->tags);
 
-            return to_route('home.index');
+            return to_route('home.show', $slug)->with('success', 'Question Modified Successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error while updating forum');
+            return redirect()->back()->with('error', 'Error while updating question');
         }
     }
 
@@ -162,9 +163,9 @@ class ForumController extends Controller
         try {
             $forums->delete();
             $forums->tags()->detach();
-            return to_route('home.index');
+            return to_route('home.index')->with('success', 'Question Successfully Removed!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error while deleting forum');
+            return redirect()->back()->with('error', 'Error while deleting question');
         }
     }
 
