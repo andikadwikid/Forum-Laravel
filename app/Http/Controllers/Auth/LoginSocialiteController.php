@@ -7,7 +7,6 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-use RealRashid\SweetAlert\Facades\Alert;
 
 
 class LoginSocialiteController extends Controller

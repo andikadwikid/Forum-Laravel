@@ -18,6 +18,7 @@
             <div class="col-md-9 text-break">
                 <h1>{{ $forum->forum_title }}</h1>
                 <hr>
+
                 {!! $forum->forum_content !!}
 
                 <div class="d-flex flex-wrap mb-3">
@@ -32,7 +33,7 @@
                     @endforeach
                 </div>
 
-                <div class="d-flex flex-wrap mb-5">
+                <div class="d-flex flex-wrap mb-3">
 
                     @can('viewEditDelete', $forum)
                         <a href="{{ route('home.edit', $forum->slug) }}" class="me-4 text-muted text-decoration-none">
