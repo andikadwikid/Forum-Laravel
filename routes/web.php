@@ -36,8 +36,9 @@ Route::controller(ForumController::class)->group(function () {
     });
     Route::get('/home', 'index')->name('home.index');
     Route::get('/home/{forums:slug}', 'show')->name('home.show');
-
-    Route::get('/home/tags/{tags:slug}', 'show')->name('tags.show');
+});
+Route::controller(TagController::class)->group(function () {
+    Route::get('/tag/{tags:slug}', 'show')->name('tags.show');
 });
 
 //socialite
