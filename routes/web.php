@@ -26,16 +26,20 @@ Auth::routes();
 //Forum and Answer
 Route::controller(ForumController::class)->group(function () {
     Route::middleware('auth')->group(function () {
-        Route::get('/home/create', 'create')->name('home.create');
-        Route::post('/home/create', 'store')->name('home.store');
-        Route::get('/home/{forums:slug}/edit', 'edit')->name('home.edit');
-        Route::patch('/home/{forums:slug}/edit', 'update')->name('home.update');
-        Route::delete('/home/{forums:slug}', 'destroy')->name('home.destroy');
+        Route::prefix('home')->group(function () {
+            Route::get('/create', 'create')->name('home.create');
+            Route::post('/create', 'store')->name('home.store');
+            Route::get('/{forums:slug}/edit', 'edit')->name('home.edit');
+            Route::patch('/{forums:slug}/edit', 'update')->name('home.update');
+            Route::delete('/{forums:slug}', 'destroy')->name('home.destroy');
 
-        Route::post('/home/{forum:id}/answer', 'answerStore')->name('home.answer.store');
+            Route::post('/home/{forum:id}/answer', 'answerStore')->name('home.answer.store');
+        });
     });
-    Route::get('/home', 'index')->name('home.index');
-    Route::get('/home/{forums:slug}', 'show')->name('home.show');
+    Route::prefix('home')->group(function () {
+        Route::get('/', 'index')->name('home.index');
+        Route::get('/{forums:slug}', 'show')->name('home.show');
+    });
 });
 Route::controller(TagController::class)->group(function () {
     Route::get('/tag/{tags:slug}', 'show')->name('tags.show');
