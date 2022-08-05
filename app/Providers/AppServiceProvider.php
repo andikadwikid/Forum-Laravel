@@ -33,26 +33,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
-        View::share(
-            'popular_forum',
-            Forum::withCount('views')
-                ->orderBy('views_count', 'desc')
-                ->limit(10)
-                ->get()
-        );
-        View::share(
-            'popular_today_forum',
-            Forum::withCount('views')
-                ->orderBy('views_count', 'desc')
-                ->whereDate('created_at', Carbon::today())
-                ->limit(5)
-                ->get()
-        );
-        View::share(
-            'recent_forum',
-            Forum::orderBy('created_at', 'desc')
-                ->limit(10)
-                ->get()
-        );
     }
 }
