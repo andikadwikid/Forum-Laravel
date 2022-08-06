@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Auth\LoginSocialiteController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\Payment\MidtransController;
+use App\Http\Controllers\Payment\TripayCallbackController;
+use App\Http\Controllers\PremiumController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +44,12 @@ Route::controller(ForumController::class)->group(function () {
 });
 Route::controller(TagController::class)->group(function () {
     Route::get('/tag/{tags:slug}', 'show')->name('tags.show');
+});
+
+//Payment Midtrans
+Route::controller(MidtransController::class)->group(function () {
+    Route::get('/payment', 'index')->name('payment.index');
+    Route::post('/payment', 'store')->name('payment.store');
 });
 
 //socialite

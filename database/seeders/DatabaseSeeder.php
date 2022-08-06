@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             ForumSeeder::class,
             AnswerSeeder::class,
+            PremiumSeeder::class,
             // ImageForumSeeder::class,
             // ImageAnswerSeeder::class,
         ]);

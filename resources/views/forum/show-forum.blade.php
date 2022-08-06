@@ -75,7 +75,7 @@
                                     </a>
                                 </div>
                             @endcan
-                            <div class="imgContainer">
+                            <div class="overflow-auto">
 
                                 {!! $answer->answer_content !!}
                             </div>

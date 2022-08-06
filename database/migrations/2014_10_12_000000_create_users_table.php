@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->dateTime('premium')->nullable();
+            $table->boolean('donor')->nullable();
             $table->string('provider_name')->default('email');
             $table->string('provider_id')->unique()->nullable();
             $table->rememberToken();

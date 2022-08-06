@@ -60,6 +60,11 @@ class User extends Authenticatable
         return $this->hasMany(Answer::class, 'user_id');
     }
 
+    public function user_premium()
+    {
+        return $this->hasOne(UserPremium::class, 'user_id');
+    }
+
     public function getFullNameAttribute()
     {
         return $this->firstname . " " . $this->lastname;

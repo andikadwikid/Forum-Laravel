@@ -119,12 +119,12 @@
                         <rect width="100%" height="100%" fill="#20c997"></rect>
                     </svg>
                     <div class="card-body">
-                        <h5 class="card-title">Example test</h5>
+                        <h5 class="card-title">Premium</h5>
                         <p class="card-text">
 
                         </p>
                         <div class="text-center">
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <a href="{{ route('payment.index') }}" class="btn btn-primary">Subscribe</a>
                         </div>
                     </div>
                 </div>
